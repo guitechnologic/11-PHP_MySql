@@ -7,9 +7,12 @@
 </head>
 
 <body>
+    
     <?php require("curso1.php"); ?>
+
     <?php echo "<br>"; ?>
-    <?php require_once("curso1.php"); ?>
+    
+    <?php require_once("curso2.php"); ?>
     
 </body>
 </html>

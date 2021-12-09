@@ -1,3 +1,8 @@
+<?php
+
+
+?>
+
 <!doctype html>
 <html>
     <head>
@@ -6,9 +11,24 @@
     </head>
 
     <body>
-        <?php 
-            print_r(getdate());
+    <ul>
+      
+            
+    <?php   
+         
+    ?>
 
-        ?>
+   
+
+    <?php
+        
+    ?>
+
     </body>
 </html>
+
+<?php 
+
+   
+
+        ?>
