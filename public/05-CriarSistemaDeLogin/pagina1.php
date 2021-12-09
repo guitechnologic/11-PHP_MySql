@@ -1,4 +1,12 @@
 <?php require_once("../../conexao/conexao.php"); ?>
+<?php
+
+    session_start();
+
+    $_SESSION["usuario"] = "Guilherme"
+
+?>
+
 <!doctype html>
 <html>
     <head>
@@ -14,6 +22,12 @@
         <?php include_once("../_incluir/funcoes.php"); ?>
         
         <main>
+
+            <?php
+                echo $_SESSION["usuario"];
+            ?>
+
+            <a href="pagina2.php">pagina 2</a>
 
         </main>
 
