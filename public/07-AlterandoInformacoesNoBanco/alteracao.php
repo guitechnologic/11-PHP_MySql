@@ -1,67 +1,59 @@
 <?php require_once("../../conexao/conexao.php"); ?>
-
-<?php 
-
-    if( isset($_POST["nometransportadora"] ) ){
-        $nome       = $_POST["nometransportadora"];
-        $endereco   = $_POST["endereco"];
-        $telefone   = $_POST["telefone"];
-        $cidade     = $_POST["cidade"];
+<?php
+    if( isset($_POST["nometransportadora"]) ) {
+        $nome       = ($_POST["nometransportadora"]);
+        $endereco   = ($_POST["endereco"]);
+        $cidade     = ($_POST["cidade"]);
         $estado     = $_POST["estados"];
         $cep        = $_POST["cep"];
         $cnpj       = $_POST["cnpj"];
+        $telefone   = $_POST["telefone"];
         $tID        = $_POST["transportadoraID"];
         
-        //alterar transportadora
+        // Objeto para alterar
         $alterar = "UPDATE transportadoras ";
-        $alterar .= " SET ";
-        $alterar .= " nometransportadora    = '{$nome}      ',";
-        $alterar .= " endereco              = '{$endereco}  ',";
-        $alterar .= " telefone              = '{$telefone}  ',";
-        $alterar .= " cidade                = '{$cidade}    ',";
-        $alterar .= " estadoID              =  {$estado}     ,";
-        $alterar .= " cep                   = '{$cep}       ',";
-        $alterar .= " cnpj                  = '{$cnpj}      ',";
-        $alterar .= " WHERE transportadoraID = {$tID}         ";
-        
+        $alterar .= "SET ";
+        $alterar .= "nometransportadora     = '{$nome}      ',";
+        $alterar .= "endereco               = '{$endereco}  ',";
+        $alterar .= "cidade                 = '{$cidade}    ',";
+        $alterar .= "estadoID               =  {$estado}     ,";
+        $alterar .= "cep                    = '{$cep}       ',"; 
+        $alterar .= "cnpj                   = '{$cnpj}      ',";
+        $alterar .= "telefone               = '{$telefone}  ' ";
+        $alterar .= "WHERE transportadoraID = {$tID}          ";
         $operacao_alterar = mysqli_query($conecta, $alterar);
         if(!$operacao_alterar) {
-            die("erro na alteraçao");
+            die("Erro na alteracao");   
         } else {
-            header("location:listagem.php");
+            header("location:listagem.php");   
         }
-
-
+        
     }
 
-
-
-
-    //consulta a tabela de transportadoras
+    // Consulta a tabela de transportadoras
     $tr = "SELECT * ";
-    $tr .= " FROM transportadoras ";
+    $tr .= "FROM transportadoras ";
     if(isset($_GET["codigo"]) ) {
         $id = $_GET["codigo"];
-        $tr .= " WHERE transportadoraID = {$id} ";
+        $tr .= "WHERE transportadoraID = {$id} ";
     } else {
         $tr .= "WHERE transportadoraID = 1 ";
     }
-
+    
     $con_transportadora = mysqli_query($conecta,$tr);
     if(!$con_transportadora) {
         die("Erro na consulta");
     }
 
     $info_transportadora = mysqli_fetch_assoc($con_transportadora);
-    
-    //consulta aos estados
-    $estados = "SELECT * ";
-    $estados .= " FROM estados ";
-    $lista_estados = mysqli_query($conecta, $estados);
-    if(!$lista_estados){
-        die("Erro na base");
-    }
 
+    // consulta aos estados
+    $estados = "SELECT * ";
+    $estados .= "FROM estados ";
+    $lista_estados = mysqli_query($conecta, $estados);
+    if(!$lista_estados) {
+       die("erro no banco"); 
+    }
 
 ?>
 
@@ -69,7 +61,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Curso PHP Integração com MySQL</title>
+        <title>Curso PHP INTEGRACAO</title>
         
         <!-- estilo -->
         <link href="_css/estilo.css" rel="stylesheet">
@@ -78,61 +70,57 @@
 
     <body>
         <?php include_once("../_incluir/topo.php"); ?>
-        <?php include_once("../_incluir/funcoes.php"); ?> 
+        <?php include_once("../_incluir/funcoes.php"); ?>
         
         <main>  
             <div id="janela_formulario">
                 <form action="alteracao.php" method="post">
-                    <h2>Alteracao de Transporte</h2>
+                    <h2>Alteração de Transportadoras</h2>
+                    
+                    <label for="nometransportadora">Nome da Transportadora</label>
+                    <input type="text" value="<?php echo ($info_transportadora["nometransportadora"])  ?>" name="nometransportadora" id="nometransportadora">
 
-                    <label for="nometransportadora">Nome da transportadora</label>
-                    <input type="text" value="<?php echo $info_transportadora["nometransportadora"] ?>" name="nometransportadora" id="nometransportadora">
-
-                    <label for="endereco">Endereco</label>
-                    <input type="text" value="<?php echo $info_transportadora["endereco"] ?>" name="endereco" id="endereco">
-
+                    <label for="endereco">Endereço</label>
+                    <input type="text" value="<?php echo ($info_transportadora["endereco"])  ?>" name="endereco" id="endereco">
+                    
                     <label for="cidade">Cidade</label>
-                    <input type="text" value="<?php echo $info_transportadora["cidade"] ?>" name="cidade" id="cidade">
-
+                    <input type="text" value="<?php echo ($info_transportadora["cidade"])  ?>" name="cidade" id="cidade">
+                    
                     <label for="estados">Estados</label>
-                    <select type="text" value="" name="estados" id="estados">
-                        <?php
+                    <select id="estados" name="estados"> 
+                        <?php 
                             $meuestado = $info_transportadora["estadoID"];
-                            while($linha = mysqli_fetch_assoc($lista_estados)){
+                            while($linha = mysqli_fetch_assoc($lista_estados)) {
                                 $estado_principal = $linha["estadoID"];
-                                if($meuestado == $estado_principal){
+                                if($meuestado == $estado_principal) {
                         ?>
-
-                        <option value="<?php echo $linha["estadoID"] ?>" selected>
-                            <?php echo $linha["nome"] ?>
-                        </option>
-
+                            <option value="<?php echo $linha["estadoID"] ?>" selected>
+                                <?php echo ($linha["nome"]) ?>
+                            </option>
                         <?php
-                                }else{
+                                } else {
                         ?>
-                        <option value="<?php echo $linha["estadoID"] ?>" >
-                            <?php echo $linha["nome"] ?>
-                        </option>
-                        <?php
+                            <option value="<?php echo $linha["estadoID"] ?>" >
+                                <?php echo ($linha["nome"]) ?>
+                            </option>                        
+                        <?php 
+                                }
                             }
-                        }
                         ?>
                     </select>
-
+                    
                     <label for="cep">CEP</label>
-                    <input type="text" value="<?php echo $info_transportadora["cep"] ?>" name="cep" id="cep">
-
+                    <input type="text" value="<?php echo ($info_transportadora["cep"])  ?>" name="cep" id="cep">                    
+                    
                     <label for="telefone">Telefone</label>
-                    <input type="text" value="<?php echo $info_transportadora["telefone"] ?>" name="telefone" id="telefone">
+                    <input type="text" value="<?php echo ($info_transportadora["telefone"])  ?>" name="telefone" id="telefone">                    
 
                     <label for="cnpj">CNPJ</label>
-                    <input type="text" value="<?php echo $info_transportadora["cnpj"] ?>" name="cnpj" id="cnpj">
+                    <input type="text" value="<?php echo ($info_transportadora["cnpj"])  ?>" name="cnpj" id="cnpj">                    
 
                     <input type="hidden" name="transportadoraID" value="<?php echo $info_transportadora["transportadoraID"] ?>">
-                    <input type="submit" value="Confirmar alteração">
-
-
-                </form>
+                    <input type="submit" value="Confirmar alteração">                    
+                </form>   
             </div>
         </main>
 
