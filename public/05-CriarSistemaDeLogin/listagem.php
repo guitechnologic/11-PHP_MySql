@@ -1,6 +1,13 @@
 <?php require_once("../../conexao/conexao.php"); ?>
 
 <?php
+        //variavel de sessao
+        session_start();
+
+        if ( !isset($_SESSION["user_portal"])){
+            header("location:login.php");
+        }
+
     // Determinar localidade BR
     setlocale(LC_ALL, 'pt_BR');
 
@@ -11,10 +18,12 @@
         $nome_produto = $_GET["produto"];
         $produtos .= "WHERE nomeproduto LIKE '%{$nome_produto}%' ";
     }
+
     $resultado = mysqli_query($conecta, $produtos);
     if(!$resultado) {
         die("Falha na consulta ao banco");   
     }
+
 ?>
 <!doctype html>
 <html>
@@ -33,6 +42,7 @@
         <?php include_once("../_incluir/funcoes.php"); ?>
         
         <main>
+
             <div id="janela_pesquisa">
                 <form action="listagem.php" method="get">
                     <input type="text" name="produto" placeholder="Pesquisa">
@@ -56,7 +66,8 @@
                 </ul>
              <?php
                 }
-            ?>           
+            ?>    
+
             </div>
             
         </main>
