@@ -19,8 +19,14 @@
 
         ?>
 
-        <div id="header_saudacao"><h5>bem vindo, <?php echo $nome ?> - <a href="sair.php"></a></h5></div>
-        <h5>sair</h5>
+        <div id="header_saudacao">
+            <h5>bem vindo, 
+                <?php echo $nome ?> - Sair
+                    <a href="sair.php">
+                    </a>
+            </h5>
+        </div>
+        
 
         <?php
             }
